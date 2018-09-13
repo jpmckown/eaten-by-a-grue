@@ -3,12 +3,16 @@
 #include <iostream>
 #include <string>
 
+#include "dummy.h"
+
 void gameOver() {
     std::cout << "You were eaten by a grue" << std::endl << "Game over" << std::endl;
 }
 
 int main(int c, char** args) {
    std::string pWeapon("");
+
+    Dummy* dummy = new Dummy();
 
     std::cout << "Hello. Welcome to the darkest darkest dungeon. Please choose your weapon:" << std::endl
     << "a) longsword" << std::endl << "b) dual daggers" << std::endl << "c) bow" << std::endl;
@@ -30,7 +34,12 @@ int main(int c, char** args) {
     << "a) north" << std::endl << "b) east" << std::endl << "c) west" << std::endl << "d) south" << std::endl;
     std::cin >> input;
 
-    gameOver();
+    if (dummy->isDead())
+        gameOver();
+    else
+        std::cout << "Soon...." << std::endl;
+
+    delete dummy;
 
     return 0;
 }

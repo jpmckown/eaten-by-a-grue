@@ -1,11 +1,16 @@
-dungeon:main.o dummy.o
-	g++ -o dungeon main.o dummy.o
+out_dir=bin/
+objects=main.o dummy.o
 
-main.o: main.cpp 
-	g++ -c main.cpp
+build: clean dungeon
 
-dummy.o: dummy.cpp
-	g++ -c dummy.cpp
+dungeon: $(objects)
+	g++ -o dungeon $(objects)
+	mkdir $(out_dir)
+	mv ./dungeon $(out_dir)
+	mv *.o $(out_dir)
+
+sources: main.cpp dummy.cpp
+	g++ -c main.cpp dummy.cpp
 
 clean:
-	rm dungeon main.o
+	rm -rf $(out_dir)

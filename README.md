@@ -8,7 +8,7 @@
 3. Profit
 
 ### Playing
-1. ./dungeon
+1. ./bin/dungeon
 
 ### Not dying
 1. *evil laughter*

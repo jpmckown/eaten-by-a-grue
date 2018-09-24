@@ -3,14 +3,15 @@
 #include <iostream>
 #include <string>
 
-#include "dummy.h"
+#include "dummys/dummy.h"
+#include "things/item.h"
 
 void gameOver() {
     std::cout << "You were eaten by a grue" << std::endl << "Game over" << std::endl;
 }
 
 int main(int c, char** args) {
-   std::string pWeapon("");
+    std::string weapon("");
 
     Dummy* dummy = new Dummy();
 
@@ -20,15 +21,17 @@ int main(int c, char** args) {
     std::cin >> input;
 
     if (input == "a") {
-        pWeapon = "longsword";
-        std::cout << "You have selected the " << pWeapon << "!" << std::endl;
+        weapon = "longsword";
+        std::cout << "You have selected the " << weapon << "!" << std::endl;
     }else if(input == "b") {
-        pWeapon = "dual daggers";
-        std::cout << "You have selected the " << pWeapon << "!" << std::endl;
+        weapon = "dual daggers";
+        std::cout << "You have selected the " << weapon << "!" << std::endl;
     }else if(input == "c") {
-        pWeapon = "bow";
-        std::cout << "You have selected the " << pWeapon << "!" << std::endl;
+        weapon = "bow";
+        std::cout << "You have selected the " << weapon << "!" << std::endl;
     }
+    Item* pWeapon = new Item(weapon);
+    dummy->acquire(pWeapon);
 
     std::cout << "Choose your direction of travel:" << std::endl
     << "a) north" << std::endl << "b) east" << std::endl << "c) west" << std::endl << "d) south" << std::endl;

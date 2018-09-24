@@ -1,16 +1,19 @@
 out_dir=bin/
-objects=main.o dummy.o
+objects=bin/main.o bin/item.o bin/dummy.o
+classes=main.cpp things/item.cpp dummys/dummy.cpp
 
-build: clean dungeon
+build: clean structure sources dungeon
+
+structure:
+	mkdir $(out_dir)
 
 dungeon: $(objects)
-	g++ -o dungeon $(objects)
-	mkdir $(out_dir)
-	mv ./dungeon $(out_dir)
-	mv *.o $(out_dir)
+	g++ -g -o $(out_dir)/dungeon $(objects)
 
-sources: main.cpp dummy.cpp
-	g++ -c main.cpp dummy.cpp
+sources: $(classes)
+	g++ -c -g -std=c++11 main.cpp -o $(out_dir)/main.o
+	g++ -c -g -std=c++11 things/item.cpp -o $(out_dir)/item.o
+	g++ -c -g -std=c++11 dummys/dummy.cpp -o $(out_dir)/dummy.o
 
 clean:
 	rm -rf $(out_dir)

@@ -5,12 +5,15 @@
 
 #include "dummys/dummy.h"
 #include "things/item.h"
+#include "places/map.h"
 
 void gameOver() {
     std::cout << "You were eaten by a grue" << std::endl << "Game over" << std::endl;
 }
 
 int main(int c, char** args) {
+    Map* map = new Map();
+
     std::string weapon("");
 
     Dummy* dummy = new Dummy();

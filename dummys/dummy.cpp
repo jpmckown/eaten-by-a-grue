@@ -1,7 +1,7 @@
 #include "dummy.h"
 
 Dummy::Dummy() {
-  memset(&_stats, 0, sizeof(Stats));
+  std::memset(&_stats, 0, sizeof(Stats));
 }
 
 Dummy::~Dummy() {

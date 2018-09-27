@@ -1,19 +1,26 @@
-out_dir=bin/
-objects=bin/main.o bin/item.o bin/dummy.o
-classes=main.cpp things/item.cpp dummys/dummy.cpp
+out_dir=./bin
+sources := $(shell find . -name '*.cpp')
 
 build: clean structure sources dungeon
 
 structure:
 	mkdir $(out_dir)
 
-dungeon: $(objects)
-	g++ -g -o $(out_dir)/dungeon $(objects)
+sources: $(sources)
+	$(foreach class,$(sources),$(call compile,$(class),$(notdir $(class:.cpp=.o))))
+objs=$(shell find $(out_dir) -name '*.o')
 
-sources: $(classes)
-	g++ -c -g -std=c++11 main.cpp -o $(out_dir)/main.o
-	g++ -c -g -std=c++11 things/item.cpp -o $(out_dir)/item.o
-	g++ -c -g -std=c++11 dummys/dummy.cpp -o $(out_dir)/dummy.o
+dungeon: $(objs)
+	g++ -g -o $(out_dir)/dungeon $(objs)
 
 clean:
 	rm -rf $(out_dir)
+
+define compile
+	g++ -c -g -std=c++11 $1 -o $(out_dir)/$2
+
+endef
+define print
+	@echo $1
+
+endef

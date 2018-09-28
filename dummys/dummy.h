@@ -1,15 +1,14 @@
 #pragma once
-#include <cstring>
 #include <vector>
 #include "../things/item.h"
 
 class Dummy {
   struct Stats {
-    uint64_t health;
-    uint64_t strength;
-    uint64_t intelligence;
-    uint64_t dexterity;
-    uint64_t charisma;
+    uint64_t health = 0;
+    uint64_t strength = 0;
+    uint64_t intelligence = 0;
+    uint64_t dexterity = 0;
+    uint64_t charisma = 0;
   } _stats;
   std::vector<Item*> _inventory;
 

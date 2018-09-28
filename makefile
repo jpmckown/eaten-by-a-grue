@@ -1,3 +1,6 @@
+ifndef CXX
+export CXX = g++
+endif
 out_dir=./bin
 sources := $(shell find . -name '*.cpp')
 
@@ -11,12 +14,12 @@ sources: $(sources)
 objs=$(shell find $(out_dir) -name '*.o')
 
 dungeon: $(objs)
-	g++ -g -o $(out_dir)/dungeon $(objs)
+	$(CXX) -g -o $(out_dir)/dungeon $(objs)
 
 clean:
 	rm -rf $(out_dir)
 
 define compile
-	g++ -c -g -std=c++11 $1 -o $(out_dir)/$2
+	$(CXX) -c -g -std=c++17 $1 -o $(out_dir)/$2
 
 endef

@@ -17,7 +17,7 @@ clean:
 	rm -rf $(out_dir)
 
 define compile
-	g++ -c -g -std=c++11 $1 -o $(out_dir)/$2
+	g++ -c -g -std=c++17 $1 -o $(out_dir)/$2
 
 endef
 define print

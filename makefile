@@ -2,7 +2,7 @@ ifndef CXX
 export CXX = g++
 endif
 out_dir=./bin
-sources := $(shell find . -name '*.cpp')
+sources := $(shell find . -name "*.cpp")
 
 build: clean structure sources dungeon
 
@@ -11,7 +11,7 @@ structure:
 
 sources: $(sources)
 	$(foreach class,$(sources),$(call compile,$(class),$(notdir $(class:.cpp=.o))))
-objs=$(shell find $(out_dir) -name '*.o')
+objs=$(shell find $(out_dir) -name "*.o")
 
 dungeon: $(objs)
 	$(CXX) -g -o $(out_dir)/dungeon $(objs)

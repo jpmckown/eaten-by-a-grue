@@ -18,3 +18,7 @@ std::vector<Item*> Dummy::inventory() {
 void Dummy::acquire(Item* item) {
   _inventory.push_back(item);
 }
+
+Dummy::DummyClasses Dummy::dummy_class() {
+  return _class;
+}

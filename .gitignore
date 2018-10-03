@@ -1,5 +1,2 @@
 .vscode/*
-*.out
-*.o
-*.gch
-dungeon
+bin/*

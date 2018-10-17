@@ -17,6 +17,7 @@ std::string Map::getTileInfo(int num) {
     // 1 is a wall
     // 2 is a door
     // 3 is a item
+    // 5 is player spawn
     std::string info;
     switch (num)
     {
@@ -32,6 +33,9 @@ std::string Map::getTileInfo(int num) {
         case 3:
             info = "item";
             break;       
+        case 5:
+            info = "spawn";
+            break;
         default:
             break;
     }

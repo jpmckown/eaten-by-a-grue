@@ -36,7 +36,7 @@ int main(int c, char** args) {
 
     Map* map = new Map();
     //std::cout << "map X: " << map->getMapCoords(0, 0) << " Y:" <<map->getMapCoords(0, 1) << std::endl;
-    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(0, 0)) << std::endl;
+    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(1, 5)) << std::endl;
 
     std::cout << "Choose your direction of travel:" << std::endl
     << "a) north" << std::endl << "b) east" << std::endl << "c) west" << std::endl << "d) south" << std::endl;

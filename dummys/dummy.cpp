@@ -22,3 +22,12 @@ void Dummy::acquire(Item* item) {
 Dummy::DummyClasses Dummy::dummy_class() {
   return _class;
 }
+
+std::string Dummy::name() {
+  switch(_class) {
+    case Dummy::Mage: return std::string("Mage");
+    case Dummy::Richard: return std::string("Richard");
+    case Dummy::Rogue: return std::string("Rogue");
+    case Dummy::Warrior: return std::string("Warrior");
+  }
+}

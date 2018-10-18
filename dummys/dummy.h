@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "../things/item.h"
 
 class Dummy {
@@ -16,6 +17,7 @@ class Dummy {
     void acquire(Item*);
     std::vector<Item*> inventory();
     DummyClasses dummy_class();
+    std::string name();
     virtual void attack() = 0;
     virtual void action(void* action) = 0;
 protected: 
@@ -31,3 +33,5 @@ private:
 
   std::vector<Item*> _inventory;
 };
+
+typedef Dummy* PDummy;

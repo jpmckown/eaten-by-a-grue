@@ -25,4 +25,6 @@ class Map {
     ~Map();
     int getMapCoords(int x, int y);
     std::string getTileInfo(int num);
+    uint64_t currentPosX = 1;
+    uint64_t currentPosY = 5;
 };

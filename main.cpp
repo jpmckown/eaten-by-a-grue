@@ -6,10 +6,54 @@
 
 #include "dummys/alldummys.h"
 #include "things/item.h"
+#include "places/map.h"
 #include "mechanics/combat.h"
+
+Map* map = new Map();
 
 void gameOver() {
     std::cout << "You have died" << std::endl << "Game over" << std::endl;
+}
+
+void currentTile() {
+    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) << std::endl;
+}
+
+void checkArea() {
+    std::cout << "To the north: " << map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) << std::endl;
+    std::cout << "To the west: " << map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) << std::endl;
+    std::cout << "To the east: " << map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) << std::endl;
+    std::cout << "To the south: " << map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) << std::endl;
+}
+
+void printMoveOptions() {
+    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "open") {
+        std::cout << "a) north" << std::endl;
+    }
+    if (map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "open") {
+        std::cout << "b) east" << std::endl;
+    }
+    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "open") {
+        std::cout << "c) south" << std::endl;
+    }
+    if (map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) == "open") {
+        std::cout << "d) west" << std::endl;
+    }
+}
+
+void handleInput(std::string input) {
+    if (input == "a") {
+        map->currentPosY = map->currentPosY - 1;
+    }
+    if (input == "b") {
+        map->currentPosX = map->currentPosX + 1;
+    }
+    if (input == "c") {
+        map->currentPosY = map->currentPosY + 1;
+    }
+    if (input == "d") {
+        map->currentPosX = map->currentPosX - 1;
+    }
 }
 
 PDummy spawn() {
@@ -36,6 +80,7 @@ PDummy spawn() {
             std::cout << "You have chosen Richard" << std::endl;
             hero = new Richard();
             break;
+
     }
     return hero;
 }
@@ -62,16 +107,29 @@ int main(int c, char** args) {
     std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
     PDummy dummy = spawn();
     PDummy enemy = randomFoe();
-
-    Combat fight(dummy, enemy);
+    dummy->setHealth(10);
+    std::string input("");
     
+    while(!dummy->isDead()){
+        std::cout << "Current Health:" << dummy->getHealth() << std::endl;
+        currentTile();
+        checkArea();
+        std::cout << "Choose your direction of travel:" << std::endl;
+        printMoveOptions();
+        std::cin >> input;
+        handleInput(input);
+        std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) << std::endl;    
+        dummy->removeHealth(1);        
+        if (dummy->isDead())
+            gameOver();
+        else
+            std::cout << "Soon...." << std::endl;
+    }
+    Combat fight(dummy, enemy);
     fight.run();
 
-    if (dummy->isDead())
-        gameOver();
-    else
-        std::cout << "Soon...." << std::endl;
-
+    delete enemy;
+    delete map;
     delete dummy;
 
     return 0;

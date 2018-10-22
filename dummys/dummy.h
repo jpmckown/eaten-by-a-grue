@@ -20,6 +20,9 @@ class Dummy {
     std::string name();
     virtual void attack() = 0;
     virtual void action(void* action) = 0;
+    void setHealth(uint64_t value);
+    uint64_t getHealth();
+    void removeHealth(int value);
 protected: 
   DummyClasses _class;
 private:
@@ -33,5 +36,4 @@ private:
 
   std::vector<Item*> _inventory;
 };
-
 typedef Dummy* PDummy;

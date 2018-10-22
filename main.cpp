@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
+#include <random>
 
-#include "dummys/dummy.h"
+#include "dummys/alldummys.h"
 #include "things/item.h"
 #include "places/map.h"
+#include "mechanics/combat.h"
 
 Map* map = new Map();
 
 void gameOver() {
-    std::cout << "You were eaten by a grue" << std::endl << "Game over" << std::endl;
+    std::cout << "You have died" << std::endl << "Game over" << std::endl;
 }
 
 void currentTile() {
@@ -54,29 +56,60 @@ void handleInput(std::string input) {
     }
 }
 
-int main(int c, char** args) {
-    std::string weapon("");
-    Dummy* dummy = new Dummy();
-    dummy->setHealth(10);
+PDummy spawn() {
+    Dummy* hero = nullptr;
+    std::string choice;
+    std::cout << "Choose your hero type:" << std::endl;
+    std::cout << "a) Warrior\nb) Mage\nc) Rogue\nd) Richard\n";
+    std::cin >> choice;
+    int val = (int)choice.at(0);
+    switch(val) {
+        case Dummy::Warrior:
+            std::cout << "You have chosen Warrior" << std::endl;
+            hero = new Warrior();
+            break;
+        case Dummy::Mage:
+            std::cout << "You have chosen Mage" << std::endl;
+            hero = new Mage();
+            break;
+        case Dummy::Rogue:
+            std::cout << "You have chosen Rogue" << std::endl;
+            hero = new Rogue();
+            break;
+        case Dummy::Richard:
+            std::cout << "You have chosen Richard" << std::endl;
+            hero = new Richard();
+            break;
 
-    std::cout << "Hello. Welcome to the darkest darkest dungeon. Please choose your weapon:" << std::endl
-    << "a) longsword" << std::endl << "b) dual daggers" << std::endl << "c) bow" << std::endl;
-    std::string input("");
-    std::cin >> input;
-
-    if (input == "a") {
-        weapon = "longsword";
-        std::cout << "You have selected the " << weapon << "!" << std::endl;
-    }else if(input == "b") {
-        weapon = "dual daggers";
-        std::cout << "You have selected the " << weapon << "!" << std::endl;
-    }else if(input == "c") {
-        weapon = "bow";
-        std::cout << "You have selected the " << weapon << "!" << std::endl;
     }
-    Item* pWeapon = new Item(weapon);
-    dummy->acquire(pWeapon);
+    return hero;
+}
 
+PDummy randomFoe() {
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist(0, 3);
+    int random_variable = uniform_dist(e1);
+    
+    PDummy result = nullptr;
+    switch(random_variable) {
+        case 0: result = new Mage(); break;
+        case 1: result = new Rogue(); break;
+        case 2: result = new Warrior(); break;
+        case 3: result = new Richard(); break;
+    }
+
+    return result;
+}
+
+int main(int c, char** args) {
+
+    std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
+    PDummy dummy = spawn();
+    PDummy enemy = randomFoe();
+    dummy->setHealth(10);
+    std::string input("");
+    
     while(!dummy->isDead()){
         std::cout << "Current Health:" << dummy->getHealth() << std::endl;
         currentTile();
@@ -92,7 +125,10 @@ int main(int c, char** args) {
         else
             std::cout << "Soon...." << std::endl;
     }
+    Combat fight(dummy, enemy);
+    fight.run();
 
+    delete enemy;
     delete map;
     delete dummy;
 

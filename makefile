@@ -19,6 +19,9 @@ dungeon: $(objs)
 clean:
 	rm -rf $(out_dir)
 
+run: 
+	$(out_dir)/dungeon
+
 define compile
 	$(CXX) -c -g -std=c++17 $1 -o $(out_dir)/$2
 

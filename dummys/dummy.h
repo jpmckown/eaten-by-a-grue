@@ -18,4 +18,7 @@ class Dummy {
     bool isDead();
     void acquire(Item*);
     std::vector<Item*> inventory();
+    void setHealth(uint64_t value);
+    uint64_t getHealth();
+    void removeHealth(int value);
 };

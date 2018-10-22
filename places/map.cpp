@@ -43,9 +43,6 @@ std::string Map::getTileInfo(int num) {
     return info;
 }
 
-
-
-
 // void Map::acquire(Item* item) {
 //   _inventory.push_back(item);
 // }

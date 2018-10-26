@@ -8,8 +8,12 @@ Rogue::~Rogue() {
 
 }
 
-void Rogue::attack() {
-  std::cout << "Rogue attacks!" << std::endl << "ONE BUTTON MACRO AUTOWIN!" << std::endl;
+Attack::Result Rogue::attack(PAttack attack) {
+
+}
+
+Attack::Result Rogue::defend(PAttack attack) {
+
 }
 
 void Rogue::action(void* action) {

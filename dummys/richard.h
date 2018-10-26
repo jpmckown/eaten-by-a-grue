@@ -1,8 +1,9 @@
 #pragma once
 #include "dummy.h"
 #include <iostream>
-class Richard : public Dummy {
+#include "../mechanics/attack.h"
 
+class Richard : public Dummy {
 public:
   Richard();
   ~Richard();
@@ -10,6 +11,7 @@ public:
   using Dummy::inventory;
   using Dummy::isDead;
   using Dummy::dummy_class;
-  void attack() override;
+  Attack::Result attack(PAttack) override;
+  Attack::Result defend(PAttack) override;
   void action(void*) override;
 };

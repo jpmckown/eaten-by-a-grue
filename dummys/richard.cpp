@@ -8,8 +8,12 @@ Richard::~Richard() {
 
 }
 
-void Richard::attack() {
-  std::cout << "Richard attacks!" << std::endl << "JUDY CHOP!" << std::endl;
+Attack::Result Richard::attack(PAttack attack) {
+
+}
+
+Attack::Result Richard::defend(PAttack attack) {
+
 }
 
 void Richard::action(void* action) {

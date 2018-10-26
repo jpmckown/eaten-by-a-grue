@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <random>
 #include "../dummys/dummy.h"
 class Combat {
   PDummy blue;

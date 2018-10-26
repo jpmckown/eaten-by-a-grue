@@ -8,8 +8,12 @@ Warrior::~Warrior() {
 
 }
 
-void Warrior::attack() {
-  std::cout << "Warrior attacks!" << std::endl << "I'M THE BEST.... ARRRRROOOUUUND *crane kick*!" << std::endl;
+Attack::Result Warrior::attack(PAttack attack) {
+
+}
+
+Attack::Result Warrior::defend(PAttack attack) {
+
 }
 
 void Warrior::action(void* action) {

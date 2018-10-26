@@ -16,8 +16,8 @@ void Combat::announce() {
 void Combat::run() {
   announce();
   if(blue->dummy_class() == Dummy::Richard) {
-    blue->attack();
-    red->attack();
+    // blue->attack();
+    // red->attack();
     victor = red;
     loser = blue;
   }

@@ -8,8 +8,12 @@ Mage::~Mage() {
 
 }
 
-void Mage::attack() {
-  std::cout << "Mage attacks!" << std::endl << "SCREAMING COCK!" << std::endl;
+Attack::Result Mage::attack(PAttack attack) {
+
+}
+
+Attack::Result Mage::defend(PAttack attack) {
+
 }
 
 void Mage::action(void* action) {

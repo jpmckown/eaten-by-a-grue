@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "../things/item.h"
+#include "../mechanics/attack.h"
 
 class Dummy {
   public:
@@ -18,7 +19,8 @@ class Dummy {
     std::vector<Item*> inventory();
     DummyClasses dummy_class();
     std::string name();
-    virtual void attack() = 0;
+    virtual Attack::Result attack(PAttack) = 0;
+    virtual Attack::Result defend(PAttack) = 0;
     virtual void action(void* action) = 0;
     void setHealth(uint64_t value);
     uint64_t getHealth();

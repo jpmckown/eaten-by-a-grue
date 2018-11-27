@@ -27,32 +27,44 @@ void checkArea() {
 }
 
 void printMoveOptions() {
-    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "open") {
+    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "open" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "spawn" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "item" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) == "door") {
         std::cout << "a) north" << std::endl;
     }
-    if (map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "open") {
+    if (map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "open" ||
+        map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "spawn" ||
+        map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "item" ||
+        map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) == "door") {
         std::cout << "b) east" << std::endl;
     }
-    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "open") {
+    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "open" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "spawn" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "item" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "door") {
         std::cout << "c) south" << std::endl;
     }
-    if (map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) == "open") {
+    if (map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) == "open" ||
+        map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) == "spawn" ||
+        map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) == "item" ||
+        map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) == "door") {
         std::cout << "d) west" << std::endl;
     }
 }
 
 void handleInput(std::string input) {
     if (input == "a") {
-        map->currentPosY = map->currentPosY - 1;
+        map->currentPosX -= 1;
     }
     if (input == "b") {
-        map->currentPosX = map->currentPosX + 1;
+        map->currentPosY += 1;
     }
     if (input == "c") {
-        map->currentPosY = map->currentPosY + 1;
+        map->currentPosX += 1;
     }
     if (input == "d") {
-        map->currentPosX = map->currentPosX - 1;
+        map->currentPosY -= 1;
     }
 }
 
@@ -116,8 +128,20 @@ int main(int c, char** args) {
         checkArea();
         std::cout << "Choose your direction of travel:" << std::endl;
         printMoveOptions();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+
+                if (map->currentPosX == i && map->currentPosY == j) {
+                    std::cout << " X ";
+                }else{
+                    std::cout << " " << map->getTileInfo(map->getMapCoords(i, j)) << " ";
+                }
+            }
+            std::cout << "" << std::endl;
+        }
         std::cin >> input;
         handleInput(input);
+
         std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) << std::endl;    
         dummy->removeHealth(1);        
         if (dummy->isDead())

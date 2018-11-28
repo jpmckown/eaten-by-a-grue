@@ -2,12 +2,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-#include <random>
 
-#include "dummys/alldummys.h"
-#include "things/item.h"
-#include "places/map.h"
-#include "mechanics/combat.h"
+#include "dummys/dummys.h"
+#include "mechanics/mechanics.h"
+#include "things/things.h"
+#include "places/places.h"
 
 Map* map = new Map();
 
@@ -69,7 +68,7 @@ void handleInput(std::string input) {
 }
 
 PDummy spawn() {
-    Dummy* hero = nullptr;
+    PDummy hero = nullptr;
     std::string choice;
     std::cout << "Choose your hero type:" << std::endl;
     std::cout << "a) Warrior\nb) Mage\nc) Rogue\nd) Richard\n";
@@ -98,12 +97,9 @@ PDummy spawn() {
 }
 
 PDummy randomFoe() {
-    std::random_device r;
-    std::default_random_engine e1(r());
-    std::uniform_int_distribution<int> uniform_dist(0, 3);
-    int random_variable = uniform_dist(e1);
-    
     PDummy result = nullptr;
+    Dice die(3);
+    char random_variable = die.roll();
     switch(random_variable) {
         case 0: result = new Mage(); break;
         case 1: result = new Rogue(); break;

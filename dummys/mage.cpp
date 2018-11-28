@@ -8,14 +8,6 @@ Mage::~Mage() {
 
 }
 
-Attack::Result Mage::attack(PAttack attack) {
-
-}
-
-Attack::Result Mage::defend(PAttack attack) {
-
-}
-
 void Mage::action(void* action) {
 
 }

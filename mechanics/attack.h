@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
-#include "../things/item.h"
 
 class Attack {
     public:
     enum DamageTypes {
-        Physical,
+        Slash,
+        Blunt,
+        Pierce,
         Fire,
         Arcane
     };
@@ -24,12 +25,8 @@ class Attack {
         uint64_t intelligence;
         uint64_t dexterity;
     };
-    
+
     private:
-        std::vector<Item> _weapons;
-        Stats _stats;
-        DamageTypes _damage_type;
-        DeliveryTypes _delivery_type;
 };
 
 typedef Attack* PAttack;

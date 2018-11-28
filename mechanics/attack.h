@@ -17,13 +17,13 @@ class Attack {
 
     struct Result {
         bool success;
-        uint64_t delta;
+        unsigned long long delta;
     };
 
     struct Stats {
-        uint64_t strength;
-        uint64_t intelligence;
-        uint64_t dexterity;
+        unsigned long long strength;
+        unsigned long long intelligence;
+        unsigned long long dexterity;
     };
 
     private:

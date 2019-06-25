@@ -15,10 +15,10 @@ class Map {
   // [1][3][0][0][0][1]
   // [1][1][2][1][1][1]
   int _mapGrid[6][6] = { {1, 1, 1, 1, 1, 1},
-                         {1, 5, 0, 0, 0, 1}, 
+                         {1, 0, 0, 0, 0, 1}, 
                          {1, 0, 0, 0, 0, 2}, 
                          {1, 3, 0, 0, 0, 1},
-                         {1, 0, 0, 0, 0, 1},
+                         {1, 5, 0, 0, 0, 1},
                          {1, 1, 2, 1, 1, 1} };
   
   public:
@@ -26,6 +26,10 @@ class Map {
     ~Map();
     int getMapCoords(int x, int y);
     std::string getTileInfo(int num);
-    uint64_t currentPosX = 1;
+    bool moveNorth = false;
+    bool moveEast = false;
+    bool moveSouth = false;
+    bool moveWest = false;
+    uint64_t currentPosX = 4;
     uint64_t currentPosY = 1;
 };

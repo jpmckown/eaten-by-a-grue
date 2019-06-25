@@ -19,7 +19,7 @@ void Dummy::acquire(Item* item) {
   _inventory.push_back(item);
 }
 
-void Dummy::setHealth(uint64_t value) {
+void Dummy::addHealth(uint64_t value) {
   _stats.health += value;
 }
 

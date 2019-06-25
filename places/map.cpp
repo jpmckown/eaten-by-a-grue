@@ -43,6 +43,18 @@ std::string Map::getTileInfo(int num) {
     return info;
 }
 
+void Map::setTileInfo(int x, int y, int num) {
+    _mapGrid[x][y] = num;
+}
+
+int Map::getMapHeight() {
+    return _mapHeight;
+}
+
+int Map::getMapWidth() {
+    return _mapWidth;
+}
+
 // void Map::acquire(Item* item) {
 //   _inventory.push_back(item);
 // }

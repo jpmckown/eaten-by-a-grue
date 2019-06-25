@@ -102,7 +102,6 @@ PDummy spawn() {
             std::cout << "You have chosen Richard" << std::endl;
             hero = new Richard();
             break;
-
     }
     return hero;
 }
@@ -137,8 +136,8 @@ int main(int c, char** args) {
         std::cout << "Soon....\n" << std::endl;
         std::cout << "Player Health: " << dummy->getHealth() << std::endl;
         currentTile();
-        checkArea();
-        std::cout << "Choose your direction of travel:" << std::endl;
+        //checkArea();
+        std::cout << "Choose your direction of travel: " << std::endl;
         printMoveOptions();
         std::cout << "\n\nDungeon Map:" << std::endl;
         for (int i = 0; i < map->getMapHeight(); i++) {

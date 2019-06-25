@@ -10,9 +10,14 @@
 #include "mechanics/combat.h"
 
 Map* map = new Map();
+bool isGameOver = false;
 
 void gameOver() {
     std::cout << "You have died" << std::endl << "Game over" << std::endl;
+}
+
+void gameWon() {
+    std::cout << "You have found the exit" << std::endl << "Game over" << std::endl;
 }
 
 void currentTile() {
@@ -109,10 +114,10 @@ PDummy randomFoe() {
     
     PDummy result = nullptr;
     switch(random_variable) {
-        case 0: result = new Mage(); result->setHealth(10); break;
-        case 1: result = new Rogue(); result->setHealth(10); break;
-        case 2: result = new Warrior(); result->setHealth(10); break;
-        case 3: result = new Richard(); result->setHealth(10); break;
+        case 0: result = new Mage(); result->addHealth(10); break;
+        case 1: result = new Rogue(); result->addHealth(10); break;
+        case 2: result = new Warrior(); result->addHealth(10); break;
+        case 3: result = new Richard(); result->addHealth(10); break;
     }
 
     return result;
@@ -123,19 +128,20 @@ int main(int c, char** args) {
     std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
     PDummy dummy = spawn();
     PDummy enemy = randomFoe();
-    dummy->setHealth(10);
+    dummy->addHealth(10);
     std::string input("");
     
-    while(!dummy->isDead()) {
+    while(!isGameOver) {
         std::cout << "\x1B[2J\x1B[H";
+        std::cout << "Soon....\n" << std::endl;
         std::cout << "Player Health: " << dummy->getHealth() << std::endl;
         currentTile();
         //checkArea();
         std::cout << "Choose your direction of travel: " << std::endl;
         printMoveOptions();
         std::cout << "\n\nDungeon Map:" << std::endl;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < map->getMapHeight(); i++) {
+            for (int j = 0; j < map->getMapWidth(); j++) {
 
                 if (map->currentPosX == i && map->currentPosY == j) {
                     std::cout << "    X   "; // 3 spaces in front and 2 spaces in the back
@@ -154,16 +160,25 @@ int main(int c, char** args) {
         std::cin >> input;
         
         if (handleInput(input)) {
-            std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) << std::endl;    
+            if (map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) == "door") {
+                gameWon();
+                isGameOver = true;
+            }
+
+            if (map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) == "item") {
+                dummy->addHealth(5);
+                map->setTileInfo(map->currentPosX, map->currentPosY, 0);
+            }
+
             dummy->removeHealth(1);
-            if (dummy->isDead())
+            if (dummy->isDead()) {
                 gameOver();
-            else
-                std::cout << "Soon...." << std::endl;   
+                isGameOver = true;
+            }
         }
     }
-    Combat fight(dummy, enemy);
-    fight.run();
+    //Combat fight(dummy, enemy);
+    //fight.run();
 
     delete enemy;
     delete map;

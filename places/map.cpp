@@ -1,6 +1,7 @@
 #include "map.h"
+#include <iostream>
 
-Map::Map() {
+Map::Map() : _currentLocation(4ULL, 1ULL) {
 
 }
 
@@ -8,53 +9,49 @@ Map::~Map() {
   
 }
 
-int Map::getMapCoords(int x, int y) {
-    return _mapGrid[x][y];
+Map::Tiles Map::getMapCoords() {
+    return _mapGrid[_currentLocation.x][_currentLocation.y];
 }
 
-std::string Map::getTileInfo(int num) {
-    // 0 is a open space
-    // 1 is a wall
-    // 2 is a door
-    // 3 is a item
-    // 5 is player spawn
-    std::string info;
-    switch (num)
+std::string Map::getTileInfo(Tiles tile) {
+    switch (tile)
     {
-        case 0:
-            info = "open";
-            break;
-        case 1:
-            info = "wall";
-            break;    
-        case 2:
-            info = "door";
-            break;
-        case 3:
-            info = "item";
-            break;       
-        case 5:
-            info = "spawn";
-            break;
-        default:
-            break;
+        case Tiles::Open: return std::string("open");
+        case Tiles::Wall: return std::string("wall");
+        case Tiles::Door: return std::string("door");
+        case Tiles::Item: return std::string("item");
+        case Tiles::Spawn: return std::string("spawn");
     }
-
-    return info;
 }
 
-void Map::setTileInfo(int x, int y, int num) {
-    _mapGrid[x][y] = num;
+void Map::setTileInfo(Point pt, Tiles tile) {
+    _mapGrid[pt.x][pt.y] = tile;
 }
 
-int Map::getMapHeight() {
+uint64_t Map::getMapHeight() {
     return _mapHeight;
 }
 
-int Map::getMapWidth() {
+uint64_t Map::getMapWidth() {
     return _mapWidth;
 }
 
-// void Map::acquire(Item* item) {
-//   _inventory.push_back(item);
-// }
+char Map::getDirections() {
+    char dirs = 0x0;
+    if(_mapGrid[_currentLocation.x-1][_currentLocation.y] != Map::Tiles::Wall) dirs |= Directions::North;
+    if(_mapGrid[_currentLocation.x][_currentLocation.y-1] != Map::Tiles::Wall) dirs |= Directions::West;
+    if(_mapGrid[_currentLocation.x+1][_currentLocation.y] != Map::Tiles::Wall) dirs |= Directions::South;
+    if(_mapGrid[_currentLocation.x][_currentLocation.y+1] != Map::Tiles::Wall) dirs |= Directions::East;
+    return dirs;
+}
+
+void Map::printArea() {
+    std::cout << "To the north: " << this->getTileInfo(_mapGrid[_currentLocation.x-1][_currentLocation.y]) << std::endl;
+    std::cout << "To the west: " << this->getTileInfo(_mapGrid[_currentLocation.x][_currentLocation.y-1]) << std::endl;
+    std::cout << "To the south: " << this->getTileInfo(_mapGrid[_currentLocation.x+1][_currentLocation.y]) << std::endl;
+    std::cout << "To the east: " << this->getTileInfo(_mapGrid[_currentLocation.x][_currentLocation.y+1]) << std::endl;
+}
+
+std::string Map::getMapInfo(Point pt) {
+    return this->getTileInfo(_mapGrid[pt.x][pt.y]);
+}

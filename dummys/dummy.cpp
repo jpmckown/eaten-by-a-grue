@@ -28,7 +28,10 @@ uint64_t Dummy::getHealth() {
 }
 
 void Dummy::removeHealth(int value) {
-  if (_stats.health < value) return;
+  if (_stats.health < value){
+    _stats.health = 0;
+    return;
+  }
   _stats.health -= value;
 }
 

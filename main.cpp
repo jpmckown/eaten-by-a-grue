@@ -21,61 +21,45 @@ void gameWon() {
 }
 
 void currentTile() {
-    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) << std::endl;
+    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords()) << std::endl;
 }
 
 void checkArea() {
-    std::cout << "To the north: " << map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) << std::endl;
-    std::cout << "To the west: " << map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) << std::endl;
-    std::cout << "To the east: " << map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) << std::endl;
-    std::cout << "To the south: " << map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) << std::endl;
+    map->printArea();
 }
 
 void printMoveOptions() {
-    if (map->getTileInfo(map->getMapCoords((map->currentPosX - 1), map->currentPosY)) != "wall") {
-        std::cout << "a) north" << std::endl;
-        map->moveNorth = true;
-    }
-    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY + 1))) != "wall") {
-        std::cout << "b) east" << std::endl;
-        map->moveEast = true;
-    }
-    if (map->getTileInfo(map->getMapCoords((map->currentPosX + 1), map->currentPosY)) != "wall") {
-        std::cout << "c) south" << std::endl;
-        map->moveSouth = true;
-    }
-    if (map->getTileInfo(map->getMapCoords(map->currentPosX, (map->currentPosY - 1))) != "wall") {
-        std::cout << "d) west" << std::endl;
-        map->moveWest = true;
-    }
+    char directions = map->getDirections();
+    if((directions & Map::North) == Map::North) std::cout << "a) north" << std::endl;
+    if((directions & Map::West) == Map::West) std::cout << "b) west" << std::endl;
+    if((directions & Map::South) == Map::South) std::cout << "c) south" << std::endl;
+    if((directions & Map::East) == Map::East) std::cout << "d) east" << std::endl;
 }
 
 bool handleInput(std::string input) {
-    bool validInput = false;
+    char avail = map->getDirections();
 
-    if (input == "a" && map->moveNorth) {
-        map->currentPosX -= 1;
-        validInput = true;
-    }
-    if (input == "b" && map->moveEast) {
-        map->currentPosY += 1;
-        validInput = true;
-    }
-    if (input == "c" && map->moveSouth) {
-        map->currentPosX += 1;
-        validInput = true;
-    }
-    if (input == "d" && map->moveWest) {
-        map->currentPosY -= 1;
-        validInput = true;
+    if(input == "a" && (avail & Map::North) == Map::North) { 
+        map->_currentLocation.x--;
+        return true;
     }
 
-    map->moveNorth = false;
-    map->moveEast = false;
-    map->moveSouth = false;
-    map->moveWest = false;
+    if(input == "b" && (avail & Map::West) == Map::West) { 
+        map->_currentLocation.y--;
+        return true;
+    }
 
-    return validInput;
+    if(input == "c" && (avail & Map::South) == Map::South) { 
+        map->_currentLocation.x++;
+        return true;
+    }
+
+    if(input == "d" && (avail & Map::East) == Map::East) { 
+        map->_currentLocation.y++;
+        return true;
+    }
+
+    return false;
 }
 
 PDummy spawn() {
@@ -136,21 +120,21 @@ int main(int c, char** args) {
         std::cout << "Soon....\n" << std::endl;
         std::cout << "Player Health: " << dummy->getHealth() << std::endl;
         currentTile();
-        //checkArea();
+        checkArea();
         std::cout << "Choose your direction of travel: " << std::endl;
         printMoveOptions();
         std::cout << "\n\nDungeon Map:" << std::endl;
         for (int i = 0; i < map->getMapHeight(); i++) {
             for (int j = 0; j < map->getMapWidth(); j++) {
 
-                if (map->currentPosX == i && map->currentPosY == j) {
+                if (map->_currentLocation.x == i && map->_currentLocation.y == j) {
                     std::cout << "    X   "; // 3 spaces in front and 2 spaces in the back
-                }else{
-                    std::string tempInfo = map->getTileInfo(map->getMapCoords(i, j));
+                } else {
+                    std::string tempInfo = map->getMapInfo(Map::Point(i, j));
                     if (tempInfo == "spawn") {
-                        std::cout << "  " << map->getTileInfo(map->getMapCoords(i, j)) << " "; // 2 spaces in the front 1 space in the back
+                        std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << " "; // 2 spaces in the front 1 space in the back
                     } else {
-                        std::cout << "  " << map->getTileInfo(map->getMapCoords(i, j)) << "  "; // 2 spaces on each side
+                        std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << "  "; // 2 spaces on each side
                     }
                 }
             }
@@ -160,14 +144,14 @@ int main(int c, char** args) {
         std::cin >> input;
         
         if (handleInput(input)) {
-            if (map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) == "door") {
+            if (map->getTileInfo(map->getMapCoords()) == "door") {
                 gameWon();
                 isGameOver = true;
             }
 
-            if (map->getTileInfo(map->getMapCoords(map->currentPosX, map->currentPosY)) == "item") {
+            if (map->getTileInfo(map->getMapCoords()) == "item") {
                 dummy->addHealth(5);
-                map->setTileInfo(map->currentPosX, map->currentPosY, 0);
+                map->setTileInfo(map->_currentLocation, Map::Tiles(0));
             }
 
             dummy->removeHealth(1);
@@ -177,8 +161,6 @@ int main(int c, char** args) {
             }
         }
     }
-    //Combat fight(dummy, enemy);
-    //fight.run();
 
     delete enemy;
     delete map;

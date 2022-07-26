@@ -19,7 +19,7 @@ void Dummy::acquire(Item* item) {
   _inventory.push_back(item);
 }
 
-void Dummy::setHealth(uint64_t value) {
+void Dummy::addHealth(uint64_t value) {
   _stats.health += value;
 }
 
@@ -28,7 +28,10 @@ uint64_t Dummy::getHealth() {
 }
 
 void Dummy::removeHealth(int value) {
-  if (_stats.health < value) return;
+  if (_stats.health < value){
+    _stats.health = 0;
+    return;
+  }
   _stats.health -= value;
 }
 

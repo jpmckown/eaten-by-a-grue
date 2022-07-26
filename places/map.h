@@ -2,7 +2,46 @@
 #include <string>
 #include <vector>
 
-class Map {
+class Map {  
+  public:
+    // 0 is a open space
+    // 1 is a wall
+    // 2 is a door
+    // 3 is a item
+    // 5 is player spawn
+    enum Tiles: char {
+      Open = 0x00,
+      Wall = 0x01,
+      Door = 0x02,
+      Item = 0x03,
+      Spawn = 0x05
+    };
+
+    enum Directions: char {
+      North = 0x01,
+      South = 0x02,
+      West = 0x04,
+      East = 0x08
+    };
+
+    struct Point {
+      uint64_t x;
+      uint64_t y;
+      Point(uint64_t x, uint64_t y) : x(x), y(y) { }
+    };
+
+    Map();
+    ~Map();
+    uint64_t getMapHeight();
+    uint64_t getMapWidth();
+    Tiles getMapCoords();
+    std::string getMapInfo(Point);
+    std::string getTileInfo(Tiles);
+    char getDirections();
+    void printArea();
+    void setTileInfo(Point, Tiles);
+    Point _currentLocation;
+private:
   // 0 is a open space
   // 1 is a wall
   // 2 is a door
@@ -14,18 +53,17 @@ class Map {
   // [1][0][0][0][0][2]
   // [1][3][0][0][0][1]
   // [1][1][2][1][1][1]
-  int _mapGrid[6][6] = { {1, 1, 1, 1, 1, 1},
-                         {1, 5, 0, 0, 0, 1}, 
-                         {1, 0, 0, 0, 0, 2}, 
-                         {1, 3, 0, 0, 0, 1},
-                         {1, 0, 0, 0, 0, 1},
-                         {1, 1, 2, 1, 1, 1} };
-  
-  public:
-    Map();
-    ~Map();
-    int getMapCoords(int x, int y);
-    std::string getTileInfo(int num);
-    uint64_t currentPosX = 1;
-    uint64_t currentPosY = 1;
+  const static uint64_t _mapHeight = 11;
+  const static uint64_t _mapWidth = 6;
+  Tiles _mapGrid[_mapHeight][_mapWidth] = { {Tiles(Tiles(1)), Tiles(1), Tiles(1), Tiles(1), Tiles(1), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)}, 
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(2)}, 
+                          {Tiles(1), Tiles(3), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(0), Tiles(0), Tiles(0), Tiles(0), Tiles(1)},
+                          {Tiles(1), Tiles(1), Tiles(2), Tiles(1), Tiles(1), Tiles(1)} };
 };

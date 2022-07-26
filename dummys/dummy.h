@@ -19,7 +19,7 @@ class Dummy {
     DummyClasses dummy_class();
     std::string name();
     virtual void action(void* action) = 0;
-    void setHealth(uint64_t value);
+    void addHealth(uint64_t value);
     uint64_t getHealth();
     void removeHealth(int value);
 protected: 

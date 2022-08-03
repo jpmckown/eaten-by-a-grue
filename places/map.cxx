@@ -21,6 +21,7 @@ std::string Map::getTileInfo(Tiles tile) {
         case Tiles::Door: return std::string("door");
         case Tiles::Item: return std::string("item");
         case Tiles::Spawn: return std::string("spawn");
+        default: return std::string("should never happen");
     }
 }
 

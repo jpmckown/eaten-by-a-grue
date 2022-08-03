@@ -4,7 +4,7 @@
 #include <string>
 #include <random>
 
-#include "dummys/alldummys.h"
+#include "dummys/dummys.h"
 #include "things/item.h"
 #include "places/map.h"
 #include "mechanics/combat.h"

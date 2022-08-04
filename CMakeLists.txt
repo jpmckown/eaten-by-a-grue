@@ -4,6 +4,8 @@ project(eaten_by_a_grue CXX)
 
 file(GLOB SRC_FILES
     "*.cxx"
+    "mainUI/*.cxx"
+    "mainUI/*.h"
     "dummys/*.cxx"
     "dummys/*.h"
     "mechanics/*.cxx"

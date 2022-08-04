@@ -13,6 +13,22 @@ Map::Tiles Map::getMapCoords() {
     return _mapGrid[_currentLocation.x][_currentLocation.y];
 }
 
+Map::Tiles Map::getMapCoordsNorth() {
+    return _mapGrid[_currentLocation.x-1][_currentLocation.y];
+}
+
+Map::Tiles Map::getMapCoordsWest() {
+    return _mapGrid[_currentLocation.x][_currentLocation.y-1];
+}
+
+Map::Tiles Map::getMapCoordsSouth() {
+    return _mapGrid[_currentLocation.x+1][_currentLocation.y];
+}
+
+Map::Tiles Map::getMapCoordsEast() {
+    return _mapGrid[_currentLocation.x][_currentLocation.y+1];
+}
+
 std::string Map::getTileInfo(Tiles tile) {
     switch (tile)
     {
@@ -44,13 +60,6 @@ char Map::getDirections() {
     if(_mapGrid[_currentLocation.x+1][_currentLocation.y] != Map::Tiles::Wall) dirs |= Directions::South;
     if(_mapGrid[_currentLocation.x][_currentLocation.y+1] != Map::Tiles::Wall) dirs |= Directions::East;
     return dirs;
-}
-
-void Map::printArea() {
-    std::cout << "To the north: " << this->getTileInfo(_mapGrid[_currentLocation.x-1][_currentLocation.y]) << std::endl;
-    std::cout << "To the west: " << this->getTileInfo(_mapGrid[_currentLocation.x][_currentLocation.y-1]) << std::endl;
-    std::cout << "To the south: " << this->getTileInfo(_mapGrid[_currentLocation.x+1][_currentLocation.y]) << std::endl;
-    std::cout << "To the east: " << this->getTileInfo(_mapGrid[_currentLocation.x][_currentLocation.y+1]) << std::endl;
 }
 
 std::string Map::getMapInfo(Point pt) {

@@ -9,8 +9,12 @@
 #include "places/map.h"
 #include "mechanics/combat.h"
 
+#include "mainUI/mainUI.h"
+
 Map* map = new Map();
 bool isGameOver = false;
+
+MainUI* mainUI = new MainUI();
 
 void gameOver() {
     std::cout << "You have died" << std::endl << "Game over" << std::endl;
@@ -18,14 +22,6 @@ void gameOver() {
 
 void gameWon() {
     std::cout << "You have found the exit" << std::endl << "Game over" << std::endl;
-}
-
-void currentTile() {
-    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords()) << std::endl;
-}
-
-void checkArea() {
-    map->printArea();
 }
 
 void printMoveOptions() {
@@ -116,11 +112,11 @@ int main(int c, char** args) {
     std::string input("");
     
     while(!isGameOver) {
-        std::cout << "\x1B[2J\x1B[H";
-        std::cout << "Soon....\n" << std::endl;
-        std::cout << "Player Health: " << dummy->getHealth() << std::endl;
-        currentTile();
-        checkArea();
+        mainUI->renderPlayerInfo(dummy->getHealth());
+        mainUI->renderCurrentTile(map->getTileInfo(map->getMapCoords()));
+        mainUI->renderMapArea(map->getTileInfo(map->getMapCoordsNorth()), map->getTileInfo(map->getMapCoordsWest()),
+                              map->getTileInfo(map->getMapCoordsEast()), map->getTileInfo(map->getMapCoordsSouth()));
+
         std::cout << "Choose your direction of travel: " << std::endl;
         printMoveOptions();
         std::cout << "\n\nDungeon Map:" << std::endl;

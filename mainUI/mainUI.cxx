@@ -1,5 +1,4 @@
 #include "mainUI.h"
-#include <iostream>
 
 MainUI::MainUI() {}
 
@@ -19,4 +18,12 @@ void MainUI::renderMapArea(std::string tileInfo1, std::string tileInfo2, std::st
     std::cout << "To the west: " << tileInfo2 << std::endl;
     std::cout << "To the south: " << tileInfo3 << std::endl;
     std::cout << "To the east: " << tileInfo4 << std::endl;
+}
+
+void MainUI::renderWelcomeMsg() {
+    std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
+}
+
+void MainUI::renderAwaitInputMsg() {
+    std::cout << "Choose your direction of travel: " << std::endl;
 }

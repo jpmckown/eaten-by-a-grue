@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
 #include <random>
+#include "SDL.h"
 
 #include "dummys/dummys.h"
 #include "things/item.h"
 #include "places/map.h"
 #include "mechanics/combat.h"
+
+
 
 #include "mainUI/mainUI.h"
 
@@ -115,7 +118,41 @@ PDummy randomFoe() {
 
 
 
-int main(int c, char **args) {
+int main(int c, char* args[]) {
+
+    //The window we'll be rendering to
+    SDL_Window* window = NULL;
+
+    //The surface contained by the window
+    SDL_Surface* screenSurface = NULL;
+
+    //Screen dimension constants
+    const int SCREEN_WIDTH = 640;
+    const int SCREEN_HEIGHT = 480;
+
+    //Initialize SDL
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+        printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+    }else{
+        //Create window
+        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+                                  SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (window == NULL) {
+            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        }else{
+            //Get window surface
+            screenSurface = SDL_GetWindowSurface( window );
+
+            //Fill the surface white
+            SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+
+            //Update the surface
+            SDL_UpdateWindowSurface( window );
+
+            //Hack to get window to stay up
+            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+        }
+    }
 
     mainUI->renderWelcomeMsg();
 
@@ -176,6 +213,14 @@ int main(int c, char **args) {
     delete enemy;
     delete map;
     delete dummy;
+
+    //Destroy window
+    SDL_DestroyWindow( window );
+
+    //Quit SDL subsystems
+    SDL_Quit();
+
+    return 0;
 
     return 0;
 }

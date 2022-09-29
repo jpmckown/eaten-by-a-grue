@@ -45,5 +45,6 @@ std::string Dummy::name() {
     case Dummy::Richard: return std::string("Richard");
     case Dummy::Rogue: return std::string("Rogue");
     case Dummy::Warrior: return std::string("Warrior");
+    default: return std::string("nobody");
   }
 }

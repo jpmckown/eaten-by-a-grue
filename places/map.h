@@ -38,9 +38,12 @@ class Map {
     std::string getMapInfo(Point);
     std::string getTileInfo(Tiles);
     char getDirections();
-    void printArea();
     void setTileInfo(Point, Tiles);
     Point _currentLocation;
+    Tiles getMapCoordsNorth();
+    Tiles getMapCoordsWest();
+    Tiles getMapCoordsSouth();
+    Tiles getMapCoordsEast();
 private:
   // 0 is a open space
   // 1 is a wall

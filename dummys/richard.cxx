@@ -8,10 +8,6 @@ Richard::~Richard() {
 
 }
 
-void Richard::attack() {
-  std::cout << "Richard attacks!" << std::endl << "JUDY CHOP!" << std::endl;
-}
-
 void Richard::action(void* action) {
 
 }

@@ -1,16 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include <random>
+#include "SDL.h"
 
-#include "dummys/alldummys.h"
+#include "dummys/dummys.h"
 #include "things/item.h"
 #include "places/map.h"
 #include "mechanics/combat.h"
 
-Map* map = new Map();
+
+
+#include "mainUI/mainUI.h"
+
+Map *map = new Map();
 bool isGameOver = false;
+
+MainUI *mainUI = new MainUI();
 
 void gameOver() {
     std::cout << "You have died" << std::endl << "Game over" << std::endl;
@@ -20,41 +25,33 @@ void gameWon() {
     std::cout << "You have found the exit" << std::endl << "Game over" << std::endl;
 }
 
-void currentTile() {
-    std::cout << "The current room is: " << map->getTileInfo(map->getMapCoords()) << std::endl;
-}
-
-void checkArea() {
-    map->printArea();
-}
-
 void printMoveOptions() {
     char directions = map->getDirections();
-    if((directions & Map::North) == Map::North) std::cout << "a) north" << std::endl;
-    if((directions & Map::West) == Map::West) std::cout << "b) west" << std::endl;
-    if((directions & Map::South) == Map::South) std::cout << "c) south" << std::endl;
-    if((directions & Map::East) == Map::East) std::cout << "d) east" << std::endl;
+    if ((directions & Map::North) == Map::North) std::cout << "a) north" << std::endl;
+    if ((directions & Map::West) == Map::West) std::cout << "b) west" << std::endl;
+    if ((directions & Map::South) == Map::South) std::cout << "c) south" << std::endl;
+    if ((directions & Map::East) == Map::East) std::cout << "d) east" << std::endl;
 }
 
 bool handleInput(std::string input) {
     char avail = map->getDirections();
 
-    if(input == "a" && (avail & Map::North) == Map::North) { 
+    if (input == "a" && (avail & Map::North) == Map::North) {
         map->_currentLocation.x--;
         return true;
     }
 
-    if(input == "b" && (avail & Map::West) == Map::West) { 
+    if (input == "b" && (avail & Map::West) == Map::West) {
         map->_currentLocation.y--;
         return true;
     }
 
-    if(input == "c" && (avail & Map::South) == Map::South) { 
+    if (input == "c" && (avail & Map::South) == Map::South) {
         map->_currentLocation.x++;
         return true;
     }
 
-    if(input == "d" && (avail & Map::East) == Map::East) { 
+    if (input == "d" && (avail & Map::East) == Map::East) {
         map->_currentLocation.y++;
         return true;
     }
@@ -63,13 +60,13 @@ bool handleInput(std::string input) {
 }
 
 PDummy spawn() {
-    Dummy* hero = nullptr;
+    Dummy *hero = nullptr;
     std::string choice;
     std::cout << "Choose your hero type:" << std::endl;
     std::cout << "a) Warrior\nb) Mage\nc) Rogue\nd) Richard\n";
     std::cin >> choice;
-    int val = (int)choice.at(0);
-    switch(val) {
+    int val = (int) choice.at(0);
+    switch (val) {
         case Dummy::Warrior:
             std::cout << "You have chosen Warrior" << std::endl;
             hero = new Warrior();
@@ -95,33 +92,83 @@ PDummy randomFoe() {
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_dist(0, 3);
     int random_variable = uniform_dist(e1);
-    
+
     PDummy result = nullptr;
-    switch(random_variable) {
-        case 0: result = new Mage(); result->addHealth(10); break;
-        case 1: result = new Rogue(); result->addHealth(10); break;
-        case 2: result = new Warrior(); result->addHealth(10); break;
-        case 3: result = new Richard(); result->addHealth(10); break;
+    switch (random_variable) {
+        case 0:
+            result = new Mage();
+            result->addHealth(10);
+            break;
+        case 1:
+            result = new Rogue();
+            result->addHealth(10);
+            break;
+        case 2:
+            result = new Warrior();
+            result->addHealth(10);
+            break;
+        case 3:
+            result = new Richard();
+            result->addHealth(10);
+            break;
     }
 
     return result;
 }
 
-int main(int c, char** args) {
 
-    std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
+
+int main(int c, char* args[]) {
+
+    //The window we'll be rendering to
+    SDL_Window* window = NULL;
+
+    //The surface contained by the window
+    SDL_Surface* screenSurface = NULL;
+
+    //Screen dimension constants
+    const int SCREEN_WIDTH = 640;
+    const int SCREEN_HEIGHT = 480;
+
+    //Initialize SDL
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
+        printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+    }else{
+        //Create window
+        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+                                  SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (window == NULL) {
+            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        }else{
+            //Get window surface
+            screenSurface = SDL_GetWindowSurface( window );
+
+            //Fill the surface white
+            SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+
+            //Update the surface
+            SDL_UpdateWindowSurface( window );
+
+            //Hack to get window to stay up
+            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+        }
+    }
+
+    mainUI->renderWelcomeMsg();
+
+    // Create test dummy
     PDummy dummy = spawn();
     PDummy enemy = randomFoe();
     dummy->addHealth(10);
     std::string input("");
-    
-    while(!isGameOver) {
-        std::cout << "\x1B[2J\x1B[H";
-        std::cout << "Soon....\n" << std::endl;
-        std::cout << "Player Health: " << dummy->getHealth() << std::endl;
-        currentTile();
-        checkArea();
-        std::cout << "Choose your direction of travel: " << std::endl;
+
+    while (!isGameOver) {
+        mainUI->renderPlayerInfo(dummy->getHealth());
+        mainUI->renderCurrentTile(map->getTileInfo(map->getMapCoords()));
+        mainUI->renderMapArea(map->getTileInfo(map->getMapCoordsNorth()), map->getTileInfo(map->getMapCoordsWest()),
+                              map->getTileInfo(map->getMapCoordsEast()), map->getTileInfo(map->getMapCoordsSouth()));
+
+        mainUI->renderAwaitInputMsg();
         printMoveOptions();
         std::cout << "\n\nDungeon Map:" << std::endl;
         for (int i = 0; i < map->getMapHeight(); i++) {
@@ -132,7 +179,8 @@ int main(int c, char** args) {
                 } else {
                     std::string tempInfo = map->getMapInfo(Map::Point(i, j));
                     if (tempInfo == "spawn") {
-                        std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << " "; // 2 spaces in the front 1 space in the back
+                        std::cout << "  " << map->getMapInfo(Map::Point(i, j))
+                                  << " "; // 2 spaces in the front 1 space in the back
                     } else {
                         std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << "  "; // 2 spaces on each side
                     }
@@ -142,7 +190,7 @@ int main(int c, char** args) {
         }
         std::cout << "\nEnter choice of direction: ";
         std::cin >> input;
-        
+
         if (handleInput(input)) {
             if (map->getTileInfo(map->getMapCoords()) == "door") {
                 gameWon();
@@ -165,6 +213,14 @@ int main(int c, char** args) {
     delete enemy;
     delete map;
     delete dummy;
+
+    //Destroy window
+    SDL_DestroyWindow( window );
+
+    //Quit SDL subsystems
+    SDL_Quit();
+
+    return 0;
 
     return 0;
 }

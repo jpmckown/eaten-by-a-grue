@@ -18,7 +18,6 @@ class Dummy {
     std::vector<Item*> inventory();
     DummyClasses dummy_class();
     std::string name();
-    virtual void attack() = 0;
     virtual void action(void* action) = 0;
     void addHealth(uint64_t value);
     uint64_t getHealth();

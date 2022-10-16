@@ -120,22 +120,34 @@ int main(int c, char** args) {
     static const int WinWidth = 1024;
     static const int WinHeight = 728;
 
-    if(SDL_Init(SDL_INIT_VIDEO) < 0) return -1;
+    if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cout << "ERROR: " << SDL_GetError() << std::endl;
+        return -1;
+    }
     std::cout << "Initialized" << std::endl;
 
-    if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) return -1;
+    if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+        std::cout << "ERROR: " << SDL_GetError() << std::endl;
+        return -1;
+    }
     std::cout << "Hint set" << std::endl;
 
     if((pWindow = SDL_CreateWindow("My SDL Game",
     	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-    	WinWidth, WinHeight, SDL_WINDOW_SHOWN)) == NULL) return -1;
+    	WinWidth, WinHeight, SDL_WINDOW_SHOWN)) == NULL) {
+        std::cout << "ERROR: " << SDL_GetError() << std::endl;
+        return -1;
+    }
 
     std::cout << "Window created" << std::endl;
 
     pPrimarySurface = SDL_GetWindowSurface(pWindow);
     std::cout << "Got surface" << std::endl;
 
-    if((pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED)) == NULL) return -1;
+    if((pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED)) == NULL) {
+        std::cout << "ERROR: " << SDL_GetError() << std::endl;
+        return -1;
+    }
     std::cout << "Renderer created" << std::endl;
 
     SDL_SetRenderDrawColor(pRenderer, 0x00, 0x00, 0x00, 0xFF);

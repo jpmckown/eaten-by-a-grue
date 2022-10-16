@@ -111,42 +111,53 @@ PDummy randomFoe() {
 
 int main(int c, char** args) {
 
+    std::cout << "Entered" << std::endl;
+
     SDL_Window* pWindow = NULL;
     SDL_Renderer* pRenderer = NULL;
     SDL_Surface* pPrimarySurface = NULL;
-
 
     static const int WinWidth = 1024;
     static const int WinHeight = 728;
 
     if(SDL_Init(SDL_INIT_VIDEO) < 0) return -1;
+    std::cout << "Initialized" << std::endl;
 
     if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) return -1;
+    std::cout << "Hint set" << std::endl;
 
     if((pWindow = SDL_CreateWindow("My SDL Game",
     	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     	WinWidth, WinHeight, SDL_WINDOW_SHOWN)) == NULL) return -1;
 
+    std::cout << "Window created" << std::endl;
+
     pPrimarySurface = SDL_GetWindowSurface(pWindow);
+    std::cout << "Got surface" << std::endl;
 
     if((pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED)) == NULL) return -1;
+    std::cout << "Renderer created" << std::endl;
 
     SDL_SetRenderDrawColor(pRenderer, 0x00, 0x00, 0x00, 0xFF);
+    std::cout << "Renderer color set" << std::endl;
 
     // success
+    std::cout << "Success" << std::endl;
     
     if(pRenderer) {
 		SDL_DestroyRenderer(pRenderer);
 		pRenderer = NULL;
+        std::cout << "Renderer destroyed" << std::endl;
 	}
 
 	if(pWindow) {
 		SDL_DestroyWindow(pWindow);
 		pWindow = NULL;
+        std::cout << "Window destroyed" << std::endl;
 	}
 
     SDL_Quit();
-
+    std::cout << "Quitted" << std::endl;
    
     return 0;
 }

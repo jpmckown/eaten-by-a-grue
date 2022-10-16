@@ -4,6 +4,8 @@
 #include <string>
 #include <random>
 
+#include "SDL.h"
+
 #include "dummys/alldummys.h"
 #include "things/item.h"
 #include "places/map.h"
@@ -109,62 +111,42 @@ PDummy randomFoe() {
 
 int main(int c, char** args) {
 
-    std::cout << "Greetings meatbag. Welcome to the darkest darkest dungeon." << std::endl;
-    PDummy dummy = spawn();
-    PDummy enemy = randomFoe();
-    dummy->addHealth(10);
-    std::string input("");
+    SDL_Window* pWindow = NULL;
+    SDL_Renderer* pRenderer = NULL;
+    SDL_Surface* pPrimarySurface = NULL;
+
+
+    static const int WinWidth = 1024;
+    static const int WinHeight = 728;
+
+    if(SDL_Init(SDL_INIT_VIDEO) < 0) return -1;
+
+    if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) return -1;
+
+    if((pWindow = SDL_CreateWindow("My SDL Game",
+    	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    	WinWidth, WinHeight, SDL_WINDOW_SHOWN)) == NULL) return -1;
+
+    pPrimarySurface = SDL_GetWindowSurface(pWindow);
+
+    if((pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED)) == NULL) return -1;
+
+    SDL_SetRenderDrawColor(pRenderer, 0x00, 0x00, 0x00, 0xFF);
+
+    // success
     
-    while(!isGameOver) {
-        std::cout << "\x1B[2J\x1B[H";
-        std::cout << "Soon....\n" << std::endl;
-        std::cout << "Player Health: " << dummy->getHealth() << std::endl;
-        currentTile();
-        checkArea();
-        std::cout << "Choose your direction of travel: " << std::endl;
-        printMoveOptions();
-        std::cout << "\n\nDungeon Map:" << std::endl;
-        for (int i = 0; i < map->getMapHeight(); i++) {
-            for (int j = 0; j < map->getMapWidth(); j++) {
+    if(pRenderer) {
+		SDL_DestroyRenderer(pRenderer);
+		pRenderer = NULL;
+	}
 
-                if (map->_currentLocation.x == i && map->_currentLocation.y == j) {
-                    std::cout << "    X   "; // 3 spaces in front and 2 spaces in the back
-                } else {
-                    std::string tempInfo = map->getMapInfo(Map::Point(i, j));
-                    if (tempInfo == "spawn") {
-                        std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << " "; // 2 spaces in the front 1 space in the back
-                    } else {
-                        std::cout << "  " << map->getMapInfo(Map::Point(i, j)) << "  "; // 2 spaces on each side
-                    }
-                }
-            }
-            std::cout << "" << std::endl;
-        }
-        std::cout << "\nEnter choice of direction: ";
-        std::cin >> input;
-        
-        if (handleInput(input)) {
-            if (map->getTileInfo(map->getMapCoords()) == "door") {
-                gameWon();
-                isGameOver = true;
-            }
+	if(pWindow) {
+		SDL_DestroyWindow(pWindow);
+		pWindow = NULL;
+	}
 
-            if (map->getTileInfo(map->getMapCoords()) == "item") {
-                dummy->addHealth(5);
-                map->setTileInfo(map->_currentLocation, Map::Tiles(0));
-            }
+    SDL_Quit();
 
-            dummy->removeHealth(1);
-            if (dummy->isDead()) {
-                gameOver();
-                isGameOver = true;
-            }
-        }
-    }
-
-    delete enemy;
-    delete map;
-    delete dummy;
-
+   
     return 0;
 }
